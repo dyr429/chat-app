@@ -21,6 +21,8 @@ io.on('connection', (socket) => {
         socket.emit('message', {user:'admin',text:'You have joined chat room'})
         socket.broadcast.to('chatroom').emit('message',{user:'admin', text: name+" has joined chatroom"})
         socket.join('chatroom')
+
+        io.to("chatroom").emit('roomData',{users: getAllUsers()})
     })
 
 
@@ -28,10 +30,15 @@ io.on('connection', (socket) => {
         const user = getUser(socket.id);
         console.log(user.name+" send: "+message)
         io.to('chatroom').emit('message', { user: user.name, text: message });
+        io.to('chatroom').emit('roomData',{getAllUsers})
         callback();
     });
 
     socket.on('disconnect',()=>{
+        const user = removeUser(socket.id)
+        if(user){
+            io.to("chatroom").emit('message',{user:'admin',text: user.name+" has left chatroom"})
+        }
         console.log('user left chatroom')
     })
 })
