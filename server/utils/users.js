@@ -5,8 +5,9 @@ const addUser = ({ id, name }) => {
 
     const existingUser = users.find((user) => user.name === name);
 
-    if(!name) return { error: 'Username required.' };
-    if(existingUser) return { error: 'Username already exists.' };
+    if(!name) return { error: 'Name cannot be empty' };
+    if(name=="admin"||name=="Admin") return {error: "You cannot use this name"}
+    if(existingUser) return { error: 'Name already exists, select another one' };
 
     const user = { id, name };
 
@@ -25,4 +26,15 @@ const getUser = (id) => users.find((user) => user.id === id);
 
 const getAllUsers = () => users;
 
-module.exports = { addUser, removeUser, getUser, getAllUsers };
+const getUserIdByName = (name) =>{
+    let Id = ''
+    users.forEach( user =>{
+        if(user.name===name){
+            Id = user.id
+        }
+    })
+
+    return Id;
+}
+
+module.exports = { addUser, removeUser, getUser, getAllUsers,getUserIdByName };
