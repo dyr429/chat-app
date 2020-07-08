@@ -61,8 +61,9 @@ io.on('connection', (socket) => {
         if(user){
             io.to("chatroom").emit('message',{user:'admin',text: user.name+" has left chatroom"})
             io.to('chatroom').emit('roomData',{users:getAllUsers()})
+            console.log(user.name+' left chat room')
         }
-        console.log(user.name+' left chat room')
+
     })
 })
 
